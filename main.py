@@ -1,5 +1,5 @@
 #client ID : 1041608834755612742
-#token : MTA0MTYwODgzNDc1NTYxMjc0Mg.G3XwVE.pcCb8DJsHq8GgeHaJ1XjqRYs2-Nq2XtQ5FHPa0
+#token : 
 #permission integer : 256064, 137439471680
 
 import discord
@@ -223,6 +223,37 @@ async def on_message(message):
     global message_lastseen, message2_lastseen, message3_lastseen\
         , message_lastseen1, message_lastseen11, message_lastseen111
 
+    bad_word = ["ไอ้สัตว์", "ควย", "เหี้ย", "พ่อมึงตาย"\
+        , "แม่มึงตาย", "สัด", "ไอ้สัด", "พ่อมึงอะ", "แม่มึงอะ"\
+            , "ไปตายซะ", "หำ", "หี", "ขี้", "ไอ้สาด", "มึง"\
+                , "กู", "ห่า", "อีดอก", "อีสัตว์", "ห่าเหว", "เย็ด"\
+                    , "สัส", "คุวย", "คาวย", "ควาย", "ไอควาย"\
+                        , "ไอโง่", "เย็ดพ่อ", "ค ว ย", "พ่องตาย"\
+                            , "แม่มึง", "พ่อมึง", "fuck", "Fuck"\
+                                , "เ ย็ ด", "ชาติหมา", "หนังหมา"\
+                                    , "ชาติสุนัข", "หนังสุนัข", "หมออ้อย"\
+                                        , "หมอย", "หรรม", "หัม", "ตอแหล"\
+                                            , "เดรัจฉาน", "สถุล", "เศษมนุษย์"\
+                                                , "ส้นตีน", "แดก", "กาก", "แดกตีน"\
+                                                    , "สันขวาน", "ไอระยำ", "ไอเปรต"\
+                                                        , "อีร่าน", "ไอkวย", "คูไว", "ชาติชั่ว"\
+                                                            , "อีเสเพล", "แตด", "ไอถ่อย", "shit"\
+                                                                , "เสือก"\
+                                                                    , "ส่อหล่อ"\
+                                                                        , "สู่รู่"\
+                                                                            , "นิกก้า"\
+                                                                    , "ฟัค", "ร่าน"\
+                                                                        , "ไอ้ถ่อย", "ครวย"\
+                                                                        , "กระหรี่", "ห อ ม"\
+                                                                            , "ถุย", "ทุย"\
+                                                                            , "ตูด", "สำโต่ย"\
+                                                                                , "ฆูวาย", "ฟวย"\
+                                                                                , "ฆูไว", "ฮี้", "ษัส", "ษัศ", "ศัศ"\
+                                                                                    , "ศัษ", "Hee", "hee"\
+                                                                                        , "ควย", "สันดานหมา", "สันดานสุนัข"\
+                                                                                            , "ชักว่าว", "แ ห ก H e e", "เงี่ยน"\
+                                                                                                , "Pornhub", "พรฮับ", "บ้ากาม", "ห่วยแตก", "อีเหี้ย"]
+
     if message.content == "สวัสดีบอท"and datetime.now() >= message_lastseen1:
         message_lastseen1 = datetime.now() + timedelta(seconds=5)
         await message.channel.send('สวัสดี '+str(message.author.name))
@@ -247,6 +278,11 @@ async def on_message(message):
 
     elif message.content == "!logout":
         await bot.close()
+
+    for word000 in bad_word:
+        if word000 in message.content:
+            await message.delete()
+            await message.channel.send("มีคำหยาบอยู่ในข้อความของคุณ กรุณาพิมพ์ใหม่ด้วยคำสุภาพอีกครั้งครับ", delete_after = 5)
 
     await bot.process_commands(message)
 
@@ -292,7 +328,7 @@ async def stop(ctx):
 async def pause(ctx):
     voice_client = get(bot.voice_clients, guild=ctx.guild)
     if voice_client == None:
-        await ctx.channel.send("Bot not in any Voice CHannel")
+        await ctx.channel.send("Bot not in any Voice Channel", delete_after = 300)
         return
 
     if voice_client.channel != ctx.author.voice.channel:
@@ -305,11 +341,11 @@ async def pause(ctx):
 async def resume(ctx):
     voice_client = get(bot.voice_clients, guild=ctx.guild)
     if voice_client == None:
-        await ctx.channel.send("Bot not in any Voice CHannel")
+        await ctx.channel.send("Bot not in any Voice Channel", delete_after = 300)
         return
 
     if voice_client.channel != ctx.author.voice.channel:
-        await ctx.channel.send("The bot is not in your voice channel. Please connect to {0} for input command".format(voice_client.channel))
+        await ctx.channel.send("The bot is not in your voice channel. Please connect to {0} for input command".format(voice_client.channel), delete_after = 300)
         return
 
     voice_client.resume()
@@ -323,12 +359,12 @@ async def leave(ctx):
 async def queue(ctx):
     voice_client = get(bot.voice_clients, guild=ctx.guild)
     if voice_client == None or not voice_client.is_connected():
-        await ctx.channel.send("Bot not in any Voice Channel", delete_after = 10)
+        await ctx.channel.send("Bot not in any Voice Channel", delete_after = 300)
         return
 
     player = get_player(ctx)
     if player.queue.empty():
-        return await ctx.send("There are no song in queue")
+        return await ctx.send("There are no song in queue", delete_after = 300)
     
     upcoming = list(itertools.islice(player.queue._queue,0,player.queue.qsize()))
     fmt = '\n'.join(f'**`{_["title"]}`**' for _ in upcoming)
@@ -339,7 +375,7 @@ async def queue(ctx):
 async def skip(ctx):
     voice_client = get(bot.voice_clients, guild=ctx.guild)
     if voice_client == None or not voice_client.is_connected():
-        await ctx.channel.send("Bot not in any Voice Channel", delete_after = 10)
+        await ctx.channel.send("Bot not in any Voice Channel", delete_after = 300)
         return
 
     if voice_client.is_paused():
@@ -349,5 +385,11 @@ async def skip(ctx):
 
     voice_client.stop()
     await ctx.send(f'**`{ctx.author}`**: Skipped the song!')
+@bot.command()
+async def loop(ctx):
+    voice_client = get(bot.voice_clients, guild=ctx.guild)
+    if voice_client == None or not voice_client.is_connected():
+        await ctx.channel.send("Bot not in any Voice Channel", delete_after = 300)
+        return
 
-bot.run('MTA0MTYwODgzNDc1NTYxMjc0Mg.G3XwVE.pcCb8DJsHq8GgeHaJ1XjqRYs2-Nq2XtQ5FHPa0')
+bot.run('')
