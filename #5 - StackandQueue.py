@@ -81,10 +81,13 @@ class ArrayStack:
 #     for i in expression:
 #         if i == "(":
 #             tempStack.push("(")
+#         elif i == ")" and (tempStack.is_empty() or tempStack.stackTop() == ")"):
+#             tempStack.push(")")
 #         elif i == ")":
 #             tempStack.pop()
 #         else:
 #             pass
+#         tempStack.printStack()
 #     if tempStack.is_empty() is True:
 #         print("Parentheses in %s are matched" %expression)
 #         return True
@@ -123,80 +126,81 @@ class ArrayStack:
 
 ####################################################################################################
 
-def infixToPostfix(expression):
-    """Infix ---> Postfix"""
-    symStack = ArrayStack()
-    new_mes = ""
-    for i in str(expression):
-        if i == "*":
-            if symStack.is_empty() is True:
-                symStack.push(i)
-            else:
-                while ((symStack.is_empty() is False) and\
-                     ((symStack.stackTop() == "/") or (symStack.stackTop() == "*"))):
-                    if symStack.is_empty():
-                        break
-                    else:
-                        sym = symStack.pop()
-                        new_mes += sym
-                symStack.push(i)
-        elif i == "/":
-            if symStack.is_empty() is True:
-                symStack.push(i)
-            else:
-                while ((symStack.is_empty() is False) and\
-                     ((symStack.stackTop() == "*") or (symStack.stackTop() == "/"))):
-                    if symStack.is_empty():
-                        break
-                    else:
-                        sym = symStack.pop()
-                        new_mes += sym
-                symStack.push(i)
-        elif i == "+":
-            if symStack.is_empty() is True:
-                symStack.push(i)
-            else:
-                while ((symStack.is_empty() is False) and\
-                     ((symStack.stackTop() == "*") or (symStack.stackTop() == "/") or\
-                         (symStack.stackTop() == "-") or (symStack.stackTop() == "+"))):
-                    if symStack.is_empty():
-                        break
-                    else:
-                        sym = symStack.pop()
-                        new_mes += sym
-                symStack.push(i)
-        elif i == "-":
-            if symStack.is_empty() is True:
-                symStack.push(i)
-            else:
-                while ((symStack.is_empty() is False) and\
-                     ((symStack.stackTop() == "*") or (symStack.stackTop() == "/") or\
-                         (symStack.stackTop() == "+") or (symStack.stackTop() == "-"))):
-                    if symStack.is_empty():
-                        break
-                    else:
-                        sym = symStack.pop()
-                        new_mes += sym
-                symStack.push(i)
-        else:
-            new_mes += i
-        print(new_mes)
-        symStack.printStack()
-    while symStack.is_empty() is False:
-        if symStack.is_empty():
-            break
-        else:
-            sym = symStack.pop()
-            new_mes += sym
-    print(new_mes)
-    symStack.printStack()
-    return new_mes
+# def infixToPostfix(expression):
+#     """Infix ---> Postfix"""
+#     symStack = ArrayStack()
+#     new_mes = ""
+#     for i in str(expression):
+#         if i == "*":
+#             if symStack.is_empty() is True:
+#                 symStack.push(i)
+#             else:
+#                 while ((symStack.is_empty() is False) and\
+#                      ((symStack.stackTop() == "/") or (symStack.stackTop() == "*"))):
+#                     if symStack.is_empty():
+#                         break
+#                     else:
+#                         sym = symStack.pop()
+#                         new_mes += sym
+#                 symStack.push(i)
+#         elif i == "/":
+#             if symStack.is_empty() is True:
+#                 symStack.push(i)
+#             else:
+#                 while ((symStack.is_empty() is False) and\
+#                      ((symStack.stackTop() == "*") or (symStack.stackTop() == "/"))):
+#                     if symStack.is_empty():
+#                         break
+#                     else:
+#                         sym = symStack.pop()
+#                         new_mes += sym
+#                 symStack.push(i)
+#         elif i == "+":
+#             if symStack.is_empty() is True:
+#                 symStack.push(i)
+#             else:
+#                 while ((symStack.is_empty() is False) and\
+#                      ((symStack.stackTop() == "*") or (symStack.stackTop() == "/") or\
+#                          (symStack.stackTop() == "-") or (symStack.stackTop() == "+"))):
+#                     if symStack.is_empty():
+#                         break
+#                     else:
+#                         sym = symStack.pop()
+#                         new_mes += sym
+#                 symStack.push(i)
+#         elif i == "-":
+#             if symStack.is_empty() is True:
+#                 symStack.push(i)
+#             else:
+#                 while ((symStack.is_empty() is False) and\
+#                      ((symStack.stackTop() == "*") or (symStack.stackTop() == "/") or\
+#                          (symStack.stackTop() == "+") or (symStack.stackTop() == "-"))):
+#                     if symStack.is_empty():
+#                         break
+#                     else:
+#                         sym = symStack.pop()
+#                         new_mes += sym
+#                 symStack.push(i)
+#         else:
+#             new_mes += i
+#         print(new_mes)
+#         symStack.printStack()
+#     while symStack.is_empty() is False:
+#         if symStack.is_empty():
+#             break
+#         else:
+#             sym = symStack.pop()
+#             new_mes += sym
+#     print(new_mes)
+#     symStack.printStack()
+#     return new_mes
 
-exp = "A+C+E-D/B"
-# exp = "A+B*C-D/E"
-# exp = "A*B+C-D*F-E"
-# exp = "A+B*C+D"
-postfix = infixToPostfix(exp)
-print("Postfix of '" + exp + "' is '" + postfix + "'")
+# exp = "A+B+C+D"
+# # exp = "A+C+E-D/B"
+# # exp = "A+B*C-D/E"
+# # exp = "A*B+C-D*F-E"
+# # exp = "A+B*C+D"
+# postfix = infixToPostfix(exp)
+# print("Postfix of '" + exp + "' is '" + postfix + "'")
 
 ####################################################################################################
