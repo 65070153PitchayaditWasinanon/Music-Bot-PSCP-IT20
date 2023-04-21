@@ -16,13 +16,17 @@ class ProbHash:
         while (self.hashtable)[self.hashFunction(student_obj.getId())] is not None:
             student_obj.id = self.rehashFunction(student_obj.getId())
         (self.hashtable)[(self.hashFunction((student_obj.getId())))] = [key, student_obj.getName(), student_obj.getGpa()]
-
+        
     def searchData(self, key):
         if (self.hashtable)[self.hashFunction(key)] is not None:
-            for i in range(0, len(self.hashtable)):
-                if ((self.hashtable)[i]) is not None and ((self.hashtable)[i])[0] == int(key):
+            i = 0
+            while True:
+                if i+1 > len(self.hashtable):
+                    break
+                elif ((self.hashtable)[i]) is not None and ((self.hashtable)[i])[0] == int(key):
                     print("Found "+ str(key) +" at index "+ str(i)+".")
                     return Student(((self.hashtable)[i])[0], ((self.hashtable)[i])[1], ((self.hashtable)[i])[2])
+                i += 1
         print(str(key) + " does not exist.")
 
     def printtable(self):
